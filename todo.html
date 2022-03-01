@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <!-- Jquery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/50d923b6b5.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body >
+    <br><br>
+    <div class="container alert alert-success">
+        <div class="fullPage">
+        <div class="row">
+            <div class="col-8">
+                <input type="text" class="form-control" required id="text" placeholder="Text Here..." autocomplete="off">
+            </div>
+            <div class="col-2">
+                <select class="form-control" id="impLevel">
+                    <option value="high">🔴High Priority</option>
+                    <option selected value="medium">🟡Medium Priority</option>
+                    <option value="low">🟢Low Priority</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <button type="button" id="addText" class="btn btn-success form-control">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <div id="dialog-1" title="Warning" hidden >Invalid Value</div>
+        </div>
+        <br><br>
+        <div class="card">
+            <div class="card-header alert-warning"><center><strong>ToDo</strong></center></div>
+            <div class="card-body" id="cardBody">
+
+            </div>
+            <div class="card-footer">
+                <!-- <button type="button" class="btn btn-info form-control btn-lg" onclick="printList();">
+                    <i class="fas fa-file-pdf"></i> Save as PDF
+                </button> -->
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+<script>
+    // ​🔴​🟠​🟡​🟢​🔵​🟣​⚫️​⚪️​🟤​
+    $(document).ready(()=>{
+        var x=1;
+        $(document).on("click","#addText",()=>{
+            var newID="bu"+x;
+            var text=($("#text").val()).trim();
+            var p="";
+            if(text != ""){
+                var priority=$("#impLevel").val();
+                var colorCode="";
+                if(priority=="high"){
+                    colorCode="danger";
+                }else if(priority=="low"){
+                    colorCode="success"; 
+                }else{
+                    colorCode="warning"; 
+                }
+                var htmlValue=`
+                <div class='row' id='${newID}'>
+                    <div class='col-2'>
+                        <button type="button" class="btn btn-${colorCode} form-control" onclick="clearElement('#${newID}');">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>   
+                    </div>
+                    <div class="col-10">
+                        <p class="form-control font-weight-bold text-capitalize"> ${text}</p>
+                    </div>
+                `
+                $("#cardBody").append(htmlValue);
+                x=x+1;
+                $("#text").prop("value","");
+            }else{
+                swal("Oops!", "Empty Text Box..", "error");
+            }
+        });
+    });
+    function clearElement(ele){
+        $(ele).hide(1000);
+    }
+    // function printList(){
+    //     print();
+    // }
+</script>
+</html>
